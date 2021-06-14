@@ -17,7 +17,7 @@ const actions = {
     login({ commit }, token){        
         commit('login', token);
     },
-    cadastrar({ commit }, usuario){
+    cadastrarUsuario({ commit }, usuario){
         const headers = { 
             "Content-Type": "application/json"
         };
@@ -25,7 +25,7 @@ const actions = {
         axios.post(
             "http://localhost:8080/pbsgi/usuario", usuario, {headers}
         ).then((response) => {
-            commit('cadastrar', response.data);
+            commit('cadastrarUsuario', response.data);
         });
     },
     logout({ commit }){
@@ -45,8 +45,8 @@ const mutations = {
         state.token = "";
         state.usuario = null;
     },
-    cadastrar: (state,data) =>{ 
-        state.usuario = data    ;   
+    cadastrarUsuario: (state,data) =>{ 
+        state.usuario = data;
     }
 }
 

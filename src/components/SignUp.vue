@@ -16,7 +16,7 @@
         ></b-form-input>
       </b-form-group>    
 
-      <b-form-group id="input-group-cpf-signup" label="Cpf:" label-for="input-cpf-signup">
+      <b-form-group id="input-group-cpf-signup" label="Cpf ou Cnpj:" label-for="input-cpf-signup">
         <b-form-input
           id="input-cpf-signup"
           v-model="form.cpf"
@@ -32,43 +32,7 @@
           required
           placeholder="Informe seu endereço"
         ></b-form-input>
-      </b-form-group>
-
-      <b-form-group id="input-group-cidade-signup" label="Cidade:" label-for="input-cidade-signup">
-        <b-form-input
-          id="input-cidade-signup"
-          v-model="form.cidade"
-          required
-          placeholder="Informe a cidade em que vive"
-        ></b-form-input>
-      </b-form-group>
-
-      <b-form-group id="input-group-bairro-signup" label="Bairro:" label-for="input-bairro-signup">
-        <b-form-input
-          id="input-bairro-signup"
-          v-model="form.bairro"
-          required
-          placeholder="Informe o bairro em que vive"
-        ></b-form-input>
-      </b-form-group>
-
-      <b-form-group id="input-group-cep-signup" label="Cep:" label-for="input-cep-signup">
-        <b-form-input
-          id="input-cep-signup"
-          v-model="form.cep"
-          required
-          placeholder="Informe o cep"
-        ></b-form-input>
-      </b-form-group>
-
-      <b-form-group id="input-group-uf-signup" label="UF:" label-for="input-uf-signup">
-        <b-form-input
-          id="input-uf-signup"
-          v-model="form.uf"
-          required
-          placeholder="Informe UF"
-        ></b-form-input>
-      </b-form-group>
+      </b-form-group>      
 
       <b-form-group
         id="input-group-email-signup"
@@ -95,6 +59,18 @@
           placeholder="Senha"
         ></b-form-input>
       </b-form-group>
+
+      <b-form-group label="Escolha o tipo de usuário" v-slot="{ ariaDescribedby }">
+      <b-form-radio-group
+        id="radio-group"
+        v-model="form.selected"
+        :aria-describedby="ariaDescribedby"
+        name="radio-sub-component"
+      >
+        <b-form-radio size="lg" value="cliente">Cliente</b-form-radio>
+        <b-form-radio size="lg" value="organizador">Organizador</b-form-radio>
+      </b-form-radio-group>
+    </b-form-group>
       
       <b-button @click="signUp" id="botaoSignUp">Enviar</b-button>    
        
@@ -103,6 +79,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
     name: "SignUp",
     data() {
@@ -111,27 +89,26 @@ export default {
           nome: '',
           cpf: '',
           endereco: '',
-          cidade: '',
-          bairro: '',
-          cep: '',
-          uf: '',
           email: '',
-          password: ''
+          password: '',
+          selected: 'cliente'
         }
       }
   },
   methods: {
-    signIn() {   
-      this.form.nome = '';
-      this.form.cpf = '';
-      this.form.endereco = '';
-      this.form.cidade = '';
-      this.form.bairro = '';
-      this.form.cep = '';
-      this.form.uf = '';   
-      this.form.email = '';
-      this.form.password = '';
-
+    ...mapActions(["cadastrarUsuario"]),
+    signUp() {   
+      let usuario = {
+        "nome": this.form.nome,
+        "cpfCnpj": this.form.cpf,
+        "email": this.form.email,
+        "endereco": this.form.endereco,
+        "tipoUsuario": this.form.selected,
+        "saldoCarteira": 5000,
+        "password": this.form.password
+      };
+      this.cadastrarUsuario(usuario);
+      this.$router.push({name: 'login'});
     }
   }  
 }
