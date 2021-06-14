@@ -13,7 +13,7 @@
         label-for="input-email-login">
         <b-form-input
           id="input-email-login"
-          v-model="form.email"
+          v-model="email"
           type="email"
           required
           placeholder="Informe seu email"
@@ -26,7 +26,7 @@
         label-for="input-password-login">
         <b-form-input
           id="input-password-login"
-          v-model="form.password"
+          v-model="password"
           type="password"
           required
           placeholder="Senha"
@@ -44,23 +44,70 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import axios from "axios";
+
 export default {
     name: 'Login',
     data() {
-      return {
-        form: {
-          email: '',
-          password: ''
-        }
+      return {        
+        password: '',
+        email: ''
       }
   },
   methods: {
-    signIn() {      
-      this.form.email = '';
-      this.form.password = '';
+    ...mapActions(["login","getUsuario"]),
+    signIn() { 
+      let loginNovo = {
+          "email": this.email,
+          "password": this.password
+        };
+      let token = "";
+
+      if(loginNovo.email != null)
+      {        
+        try {
+          const headersSemAuth = { 
+            "Content-Type": "application/json"
+          };
+
+          axios.post("http://localhost:8080/pbsgi/login", loginNovo, {headersSemAuth}).then((response) => {
+            token = response.data.token;
+            
+            this.login(token);   
+            this.carregarUsuario(token, loginNovo.email);
+          });          
+        } catch (e) {
+          console.error(e);
+        }       
+        
+      }
+      
+    },
+    carregarUsuario(token, email){
+      let usuario = null;
+      
+      try {
+          const headers = { 
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          };
+
+          axios.get("http://localhost:8080/pbsgi/usuario/email/" + email, {headers}).then((response) => {
+            usuario = response.data;
+
+            this.getUsuario(usuario);
+            this.$router.push({name: 'home'});
+          });          
+          
+        } catch (e) {
+          console.error(e);
+        }          
+        
+      }
     }
-  }  
-}
+  }
+
 </script>
 
 <style scoped>

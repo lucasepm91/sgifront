@@ -4,7 +4,8 @@ const state = {
     shows: [],
     filmes: [],
     pecas: [],
-    historico: []
+    historico: [],
+    ultimoEvento: []
 };
 
 const getters = {
@@ -15,79 +16,120 @@ const getters = {
 };
 
 const actions = {
-    buscarShows({ commit }) {
+    buscarShows({ commit }, token) {
+        const headers = { 
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        };
+
         axios.get(
-            "http://localhost:8080/pbsgi/evento/shows"
+            "http://localhost:8080/pbsgi/eventos/tipo/shows", {headers}
         ).then((response) => {
             commit('buscarShows', response.data);
         });
     },
 
-    buscarFilmes({ commit }) {
+    buscarFilmes({ commit }, token) {
+        const headers = { 
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        };
+
         axios.get(
-            "http://localhost:8080/pbsgi/evento/filmes"
+            "http://localhost:8080/pbsgi/eventos/tipo/filmes", {headers}
         ).then((response) => {
             commit('buscarFilmes', response.data);
         });
     },
 
-    buscarPecasTeatro({ commit }) {
+    buscarPecasTeatro({ commit }, token) {
+        const headers = { 
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        };
+
         axios.get(
-            "http://localhost:8080/pbsgi/evento/pecas"
+            "http://localhost:8080/pbsgi/eventos/tipo/pecas", {headers}
         ).then((response) => {
             commit('buscarPecasTeatro', response.data);
         });
     },
 
-    buscarHistorico({ commit }, usuarioId) {
+    buscarHistorico({ commit }, usuarioId, token) {
+        const headers = { 
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        };
+
         axios.get(
-            "http://localhost:8080/pbsgi/evento/historico/"+usuarioId
+            "http://localhost:8080/pbsgi/eventos/historico/"+usuarioId, {headers}
         ).then((response) => {
             commit('buscarHistorico', response.data);
         });
     },
 
-    buscarEvento({ commit }, eventoId) {
+    buscarEvento({ commit }, eventoId, token) {
+        const headers = { 
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        };
+
         axios.get(
-            "http://localhost:8080/pbsgi/evento/historico/"+eventoId
+            "http://localhost:8080/pbsgi/eventos/"+eventoId, {headers}
         ).then((response) => {
             commit('buscarEvento', response.data);
         });
     },
 
-    criarEvento({ commit }, evento){ 
+    buscarEventoPorNome({ commit }, nomeEvento, token) {
         const headers = { 
-          "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
         };
-    
+
+        axios.get(
+            "http://localhost:8080/pbsgi/eventos/nome/"+nomeEvento, {headers}
+        ).then((response) => {
+            commit('buscarEventoPorNome', response.data);
+        });
+    },
+
+    criarEvento({ commit }, evento, token){ 
+        const headers = { 
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        };
+
         axios.post(
-          "http://localhost:8080/evento", evento, {headers}
+          "http://localhost:8080/pbsgi/evento", evento, {headers}
         ).then((response) => {      
           commit('criarEvento', response.data);
         });
         
     },
 
-    deletarEvento({ commit }, id){
+    deletarEvento({ commit }, id, token){
         const headers = { 
-          "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
         };
-    
+
         axios.delete(
-          "http://localhost:8080/evento/"+id, {headers}
+          "http://localhost:8080/evento/pbsgi/"+id, {headers}
         ).then((response) => {      
           commit('deletarEvento', response.data.id);
         });
         
     },
     
-    atualizarEvento({ commit }, atlzEvento) {  
+    atualizarEvento({ commit }, atlzEvento, token) {  
         const headers = { 
-          "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
         };
-    
+
         axios.put(
-          "http://localhost:8080/evento/"+atlzEvento.id, atlzEvento, {headers}
+          "http://localhost:8080/pbsgi/evento/"+atlzEvento.id, atlzEvento, {headers}
         ).then((response) => {      
           commit("atualizarEvento", response.data);
         });
@@ -106,7 +148,13 @@ const mutations = {
         state.pecas = data;
     },
     buscarHistorico: (state, data) =>{
-        state.pecas = data;
+        state.historico = data;
+    },
+    buscarEvento: (state, data) =>{
+        state.ultimoEvento.push(data);
+    },
+    buscarEventoPorNome: (state, data) =>{
+        state.ultimoEvento.push(data);
     },
     criarEvento: (state, data) =>{
         state.historico.push(data);

@@ -1,27 +1,52 @@
 import axios from "axios";
 
 const state = {
-    usuarios: []
+    usuario: null,
+    token: ""
 };
 
 const getters = {
-    allUsuarios: state => state.usuarios
+    getUsuario: state => state.usuario,
+    getToken: state => state.token
 };
 
 const actions = {
-    getUsuario({ commit }) {
-        axios.get(
-            "http://localhost:8081/pbsgi/usuario"
-        ).then((response) => {
-            commit('getUsuario', response.data);
-        });
+    getUsuario({ commit},usuario) {        
+        commit('getUsuario', usuario);
+    },
+    login({ commit }, token){        
+        commit('login', token);
+    },
+    cadastrar({ commit }, usuario){
+        const headers = { 
+            "Content-Type": "application/json"
+        };
 
-    }
+        axios.post(
+            "http://localhost:8080/pbsgi/usuario", usuario, {headers}
+        ).then((response) => {
+            commit('cadastrar', response.data);
+        });
+    },
+    logout({ commit }){
+        commit('logout');
+    } 
 }
 
 const mutations = {
-    getusuario: (state, data) =>{
-        state.usuarios = data;
+    getUsuario: (state, usuario) =>{
+        state.usuario = usuario;        
+    },
+    login: (state,token) =>{        
+        state.token = token;
+        console.log(state.token);
+    },
+    logout: (state) =>{
+        state.token = "";
+        state.usuario = null;
+    },
+    cadastrar: (state,data) =>{ 
+        state.usuario = data    ;   
     }
 }
 
