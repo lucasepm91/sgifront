@@ -26,6 +26,10 @@
         <b-button class="botaoCompra" variant="primary" @click="finalizarCompra">Ok</b-button>
       </b-container>
     </b-row>
+
+    <b-modal v-model="mostrarMensagem" title="Compra realizada!" :hide-footer="true" id="mensagemSucesso">
+       <b-img center :src="require('../assets/imagemSucesso.png')" fluid alt="símbolo de sucesso" title="símbolo de sucesso" id="imgCheck"></b-img>
+    </b-modal>
   </b-container>
 </template>
 
@@ -39,7 +43,8 @@ export default {
       id: this.$route.params.id,
       elemento: null,
       quantidade: 0,
-      mostrar: false
+      mostrar: false,
+      mostrarMensagem: false
     }
   },
   methods: {
@@ -67,11 +72,18 @@ export default {
       };
       
       this.criarCompra({compra, token});
-      this.$router.push({name: 'home'})
+      this.mostrarMensagem = true;
+      
+      setTimeout(this.escondeMensagem, 1000);
+      
     },
     carregarElemento(){
       this.elemento = this.obterEvento;
       return this.elemento;
+    },
+    escondeMensagem(){
+      this.mostrarMensagem = false;
+      this.$router.push({name: 'home'});
     }
   },
   created() {
@@ -134,5 +146,8 @@ export default {
 .botaoCompra{
   width: 70px;
 }
-
+#imgCheck{
+  max-width: 10rem;
+  max-height: 10rem;
+}
 </style>
