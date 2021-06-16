@@ -5,14 +5,15 @@ const state = {
     filmes: [],
     pecas: [],
     historico: [],
-    ultimoEvento: []
+    ultimoEvento: null
 };
 
 const getters = {
     todosShows: state => state.shows,
     todosFilmes: state => state.filmes,
     todosPecas: state => state.pecas,
-    todosHistorico: state => state.historico
+    todosHistorico: state => state.historico,
+    obterEvento: state => state.ultimoEvento
 };
 
 const actions = {
@@ -23,7 +24,7 @@ const actions = {
         };
 
         axios.get(
-            "http://localhost:8080/pbsgi/eventos/tipo/shows", {headers}
+            "http://localhost:8080/pbsgi/eventos/tipo/show", {headers}
         ).then((response) => {
             commit('buscarShows', response.data);
         });
@@ -36,7 +37,7 @@ const actions = {
         };
 
         axios.get(
-            "http://localhost:8080/pbsgi/eventos/tipo/filmes", {headers}
+            "http://localhost:8080/pbsgi/eventos/tipo/filme", {headers}
         ).then((response) => {
             commit('buscarFilmes', response.data);
         });
@@ -49,7 +50,7 @@ const actions = {
         };
 
         axios.get(
-            "http://localhost:8080/pbsgi/eventos/tipo/pecas", {headers}
+            "http://localhost:8080/pbsgi/eventos/tipo/peca", {headers}
         ).then((response) => {
             commit('buscarPecasTeatro', response.data);
         });
@@ -68,14 +69,14 @@ const actions = {
         });
     },
 
-    buscarEvento({ commit }, eventoId, token) {
+    buscarEvento({ commit }, {id, token}) {
         const headers = { 
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token
         };
-
+        
         axios.get(
-            "http://localhost:8080/pbsgi/eventos/"+eventoId, {headers}
+            "http://localhost:8080/pbsgi/eventos/"+id, {headers}
         ).then((response) => {
             commit('buscarEvento', response.data);
         });
@@ -142,7 +143,7 @@ const mutations = {
         state.shows = data;
     },
     buscarFilmes: (state, data) =>{
-        state.filmes = data;
+        state.filmes = data;        
     },
     buscarPecasTeatro: (state, data) =>{
         state.pecas = data;
@@ -151,10 +152,10 @@ const mutations = {
         state.historico = data;
     },
     buscarEvento: (state, data) =>{
-        state.ultimoEvento.push(data);
+        state.ultimoEvento = data;
     },
     buscarEventoPorNome: (state, data) =>{
-        state.ultimoEvento.push(data);
+        state.ultimoEvento = data;
     },
     criarEvento: (state, data) =>{
         state.historico.push(data);

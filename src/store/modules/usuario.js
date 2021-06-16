@@ -39,7 +39,6 @@ const mutations = {
     },
     login: (state,token) =>{        
         state.token = token;
-        console.log(state.token);
     },
     logout: (state) =>{
         state.token = "";

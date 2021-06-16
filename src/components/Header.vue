@@ -10,7 +10,7 @@
           <b-nav-item-dropdown text="Eventos" v-if="autenticado && cliente">
             <b-dropdown-item><router-link tag="nav" to="/shows">Shows de música</router-link></b-dropdown-item>
             <b-dropdown-item><router-link tag="nav" to="/filmes">Filmes</router-link></b-dropdown-item>
-            <b-dropdown-item><router-link tag="nav" to="/pecas">Peças de teatro</router-link></b-dropdown-item>
+            <b-dropdown-item><router-link tag="nav" to="/pecas-teatro">Peças de teatro</router-link></b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item v-if="autenticado && cliente"><router-link tag="nav" to="/historico-compras">Histórico</router-link></b-nav-item>
           <b-nav-item v-if="autenticado && !cliente"><router-link tag="nav" to="/historico-eventos">Histórico</router-link></b-nav-item>

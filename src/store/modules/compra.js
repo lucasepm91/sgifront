@@ -10,14 +10,14 @@ const state = {
   
   const actions = {    
   
-  criarCompra({ commit }, compra, token){ 
+  criarCompra({ commit }, {compra, token}){ 
     const headers = { 
       "Content-Type": "application/json",
       "Authorization": "Bearer " + token
   };
-
-    axios.post(
-      "http://localhost:8080/pbsgi/compra", compra, {headers}
+    
+  axios.post(
+    "http://localhost:8080/pbsgi/compra", compra, {headers}
     ).then((response) => {
       commit('inserirCompra', response.data);
     });    
