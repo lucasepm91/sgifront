@@ -16,7 +16,7 @@
         <p>Data: {{ elemento.data}}</p>
         <p>Organizador: {{ elemento.organizador.nome}}</p>
         <p>Email para contato: {{ elemento.organizador.email}}</p>
-        <p>Preço: R${{ elemento.preco}}</p>
+        <p>Preço: {{ elemento.preco | formataMoeda}}</p>
       </b-container>
       <b-container class="compra">
         <p>Adquira aqui seus ingressos!</p>
@@ -57,10 +57,7 @@ export default {
       var mm = String(hoje.getMonth() + 1).padStart(2, '0');
       var yyyy = hoje.getFullYear();
       hoje = dd + '/' + mm + '/' + yyyy;
-      let cliente = this.getUsuario;
-
-      console.log("Nome do cliente = "+cliente.nome);
-      console.log("Id do cliente = "+cliente.id);
+      let cliente = this.getUsuario;      
 
       let compra = {
         "evento": this.elemento,
@@ -103,6 +100,12 @@ export default {
     },
     obterElemento: function(){
       return this.carregarElemento();
+    }
+  },
+  filters: {
+    formataMoeda: function (value) {
+      if (!value) return ''      
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
     }
   }
 }

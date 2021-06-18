@@ -37,7 +37,7 @@
           class="mb-3 text-center"
           @click="detalharElemento(elemento.id)"
         >
-          <b-card-text> Preço: R${{ elemento.preco }} </b-card-text>
+          <b-card-text> Preço: {{ elemento.preco | formataMoeda }} </b-card-text>
           
         </b-card>
       </b-row>
@@ -52,7 +52,7 @@
           v-for="resultado in resultadosFiltrados"
           :title="resultado.nome"
           :img-src="require('../assets/indisponivel.png')"
-          :img-alt="elemento.descricao"
+          :img-alt="resultado.descricao"
           :id="resultado.id"
           img-top
           tag="article"
@@ -60,7 +60,7 @@
           class="mb-3 text-center"
           @click="detalharElemento(resultado.id)"
         >
-          <b-card-text> Preço: R${{ elemento.preco }} </b-card-text>
+          <b-card-text> Preço: {{ resultado.preco | formataMoeda }} </b-card-text>
           
         </b-card>
       </b-row>
@@ -153,6 +153,12 @@ export default {
     obterElementos: function(){
       return this.carregarElementos();
     }
+  },
+  filters: {
+    formataMoeda: function (value) {
+      if (!value) return ''      
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+    }
   }
 }
 </script>
@@ -183,5 +189,10 @@ export default {
   margin-bottom: 30px;
   font-style: italic;
   color: dimgray;
+}
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 </style>

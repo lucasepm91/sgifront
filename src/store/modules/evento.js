@@ -56,7 +56,7 @@ const actions = {
         });
     },
 
-    buscarHistorico({ commit }, usuarioId, token) {
+    buscarHistorico({ commit }, {usuarioId, token}) {
         const headers = { 
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token
@@ -82,7 +82,7 @@ const actions = {
         });
     },
 
-    buscarEventoPorNome({ commit }, nomeEvento, token) {
+    buscarEventoPorNome({ commit }, {nomeEvento, token}) {
         const headers = { 
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token
@@ -95,21 +95,21 @@ const actions = {
         });
     },
 
-    criarEvento({ commit }, evento, token){ 
+    criarEvento({ commit }, {evento, token}){ 
         const headers = { 
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token
         };
-
+        
         axios.post(
-          "http://localhost:8080/pbsgi/evento", evento, {headers}
+          "http://localhost:8080/pbsgi/eventos", evento, {headers}
         ).then((response) => {      
           commit('criarEvento', response.data);
         });
         
     },
 
-    deletarEvento({ commit }, id, token){
+    deletarEvento({ commit }, {id, token}){
         const headers = { 
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token
@@ -123,7 +123,7 @@ const actions = {
         
     },
     
-    atualizarEvento({ commit }, atlzEvento, token) {  
+    atualizarEvento({ commit }, {atlzEvento, token}) {  
         const headers = { 
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token
