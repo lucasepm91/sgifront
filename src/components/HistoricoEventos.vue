@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="espacoChao">
     <h4 class="tituloHistorico">Meus eventos</h4>
 
     <b-list-group v-show="elementos != null && elementos.length > 0">
@@ -87,6 +87,10 @@ export default {
 
 .espacoSpan{
   margin-right: 50px;
+}
+
+.espacoChao{
+  margin-bottom: 50px;
 }
 
 </style>
