@@ -116,7 +116,7 @@ const actions = {
         };
 
         axios.delete(
-          "http://localhost:8080/evento/pbsgi/"+id, {headers}
+          "http://localhost:8080/pbsgi/eventos/"+id, {headers}
         ).then((response) => {      
           commit('deletarEvento', response.data.id);
         });
@@ -130,7 +130,7 @@ const actions = {
         };
 
         axios.put(
-          "http://localhost:8080/pbsgi/evento/"+atlzEvento.id, atlzEvento, {headers}
+          "http://localhost:8080/pbsgi/eventos/"+atlzEvento.id, atlzEvento, {headers}
         ).then((response) => {      
           commit("atualizarEvento", response.data);
         });
