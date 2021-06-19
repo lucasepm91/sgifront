@@ -22,7 +22,7 @@
         <p>Adquira aqui seus ingressos!</p>
         <span>Quantidade: </span><b-form-input v-model="quantidade" class="tamanhoQtd" id="quantidade" type="number" min="0" max="10"></b-form-input>
         <br/>
-        <p>Total: R${{obterTotal}}</p>
+        <p>Total: R${{obterTotal | formataMoeda}}</p>
         <b-button class="botaoCompra" variant="primary" @click="finalizarCompra">Ok</b-button>
       </b-container>
     </b-row>
@@ -104,7 +104,7 @@ export default {
   },
   filters: {
     formataMoeda: function (value) {
-      if (!value) return ''      
+      if (!value) return '0'      
       return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
     }
   }

@@ -17,7 +17,7 @@
     </b-list-group>
 
     <b-container class="erroPesquisa" v-show='mostrarVazio'>
-      <b-alert show variant="danger">Não foram encontrados eventos!</b-alert>
+      <b-alert show variant="danger">Não foram encontradas compras!</b-alert>
     </b-container>
 
     <b-modal v-model="mostrarMensagem" title="Evento removido!" :hide-footer="true" id="mensagemSucesso">

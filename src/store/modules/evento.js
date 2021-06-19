@@ -158,7 +158,8 @@ const mutations = {
         state.ultimoEvento = data;
     },
     criarEvento: (state, data) =>{
-        state.historico.push(data);
+
+        state.ultimoEvento = data;
     },
     deletarEvento: (state, id) =>{
         state.historico = state.historico.filter(e => e.id != id);
