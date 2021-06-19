@@ -1,6 +1,6 @@
 <template>
   <div class="espacoChao">
-    <h4 class="tituloHistorico">Meus compras</h4>
+    <h4 class="tituloHistorico">Minhas compras</h4>
 
     <b-list-group v-show="elementos != null && elementos.length > 0">
       <b-list-group-item :key="elemento.id" v-for="elemento in obterElementos">
