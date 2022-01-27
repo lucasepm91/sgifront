@@ -1,6 +1,7 @@
 # sgifront
 
-Frontend usando Vue.js para um sistema simplificado de ingressos
+Frontend usando Vue.js para um sistema simplificado de ingressos.
+Projeto desenvolvido na conta lucaseduardo91 para curso na faculdade e replicado aqui.
 
 ## Project setup
 ```
