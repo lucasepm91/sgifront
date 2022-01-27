@@ -1,5 +1,7 @@
 # sgifront
 
+Frontend usando Vue.js para um sistema simplificado de ingressos
+
 ## Project setup
 ```
 npm install
