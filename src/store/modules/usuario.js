@@ -23,7 +23,7 @@ const actions = {
         };
 
         axios.post(
-            "http://localhost:8080/pbsgi/usuario", usuario, {headers}
+            "https://localhost:44390/sgi/usuario", usuario, {headers}
         ).then((response) => {
             commit('cadastrarUsuario', response.data);
         });

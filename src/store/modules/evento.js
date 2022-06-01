@@ -24,7 +24,7 @@ const actions = {
         };
 
         axios.get(
-            "http://localhost:8080/pbsgi/eventos/tipo/show", {headers}
+            "https://localhost:44390/sgi/evento/tipo/show", {headers}
         ).then((response) => {
             commit('buscarShows', response.data);
         });
@@ -37,7 +37,7 @@ const actions = {
         };
 
         axios.get(
-            "http://localhost:8080/pbsgi/eventos/tipo/filme", {headers}
+            "https://localhost:44390/sgi/evento/tipo/filme", {headers}
         ).then((response) => {
             commit('buscarFilmes', response.data);
         });
@@ -50,7 +50,7 @@ const actions = {
         };
 
         axios.get(
-            "http://localhost:8080/pbsgi/eventos/tipo/peca", {headers}
+            "https://localhost:44390/sgi/evento/tipo/peca", {headers}
         ).then((response) => {
             commit('buscarPecasTeatro', response.data);
         });
@@ -63,7 +63,7 @@ const actions = {
         };
 
         axios.get(
-            "http://localhost:8080/pbsgi/eventos/historico/"+usuarioId, {headers}
+            "https://localhost:44390/sgi/evento/historico/"+usuarioId, {headers}
         ).then((response) => {
             commit('buscarHistorico', response.data);
         });
@@ -76,7 +76,7 @@ const actions = {
         };
         
         axios.get(
-            "http://localhost:8080/pbsgi/eventos/"+id, {headers}
+            "https://localhost:44390/sgi/evento/"+id, {headers}
         ).then((response) => {
             commit('buscarEvento', response.data);
         });
@@ -89,7 +89,7 @@ const actions = {
         };
 
         axios.get(
-            "http://localhost:8080/pbsgi/eventos/nome/"+nomeEvento, {headers}
+            "https://localhost:44390/sgi/evento/nome/"+nomeEvento, {headers}
         ).then((response) => {
             commit('buscarEventoPorNome', response.data);
         });
@@ -102,7 +102,7 @@ const actions = {
         };
         
         axios.post(
-          "http://localhost:8080/pbsgi/eventos", evento, {headers}
+          "https://localhost:44390/sgi/evento", evento, {headers}
         ).then((response) => {      
           commit('criarEvento', response.data);
         });
@@ -116,7 +116,7 @@ const actions = {
         };
 
         axios.delete(
-          "http://localhost:8080/pbsgi/eventos/"+id, {headers}
+          "https://localhost:44390/sgi/evento/"+id, {headers}
         ).then((response) => {      
           commit('deletarEvento', response.data.id);
         });
@@ -130,7 +130,7 @@ const actions = {
         };
 
         axios.put(
-          "http://localhost:8080/pbsgi/eventos/"+atlzEvento.id, atlzEvento, {headers}
+          "https://localhost:44390/sgi/evento/"+atlzEvento.id, atlzEvento, {headers}
         ).then((response) => {      
           commit("atualizarEvento", response.data);
         });

@@ -19,7 +19,7 @@ const state = {
   };
     
   axios.post(
-    "http://localhost:8080/pbsgi/compra", compra, {headers}
+    "https://localhost:44390/sgi/compra", compra, {headers}
     ).then((response) => {
       commit('inserirCompra', response.data);
     });    
@@ -32,7 +32,7 @@ const state = {
   };
     
   axios.get(
-    "http://localhost:8080/pbsgi/compra/historico/"+id, {headers}
+    "https://localhost:44390/sgi/compra/historico/"+id, {headers}
     ).then((response) => {
       commit('historicoCompra', response.data);
     });
@@ -45,7 +45,7 @@ const state = {
   };
     
   axios.delete(
-    "http://localhost:8080/pbsgi/compra/"+id, {headers}
+    "https://localhost:44390/sgi/compra/"+id, {headers}
     ).then((response) => {
       commit('removerCompra', response.data);
     });

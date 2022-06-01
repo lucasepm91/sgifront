@@ -68,10 +68,11 @@ export default {
       {        
         try {
           const headersSemAuth = { 
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Origin": "http://localhost:4000"
           };
-
-          axios.post("http://localhost:8080/pbsgi/login", loginNovo, {headersSemAuth}).then((response) => {
+          
+          axios.post("https://localhost:44390/sgi/login", loginNovo, {headersSemAuth}).then((response) => {
             token = response.data.token;
             
             this.login(token);   
@@ -93,7 +94,7 @@ export default {
             "Authorization": "Bearer " + token
           };
 
-          axios.get("http://localhost:8080/pbsgi/usuario/email/" + email, {headers}).then((response) => {
+          axios.get("https://localhost:44390/sgi/usuario/email/" + email, {headers}).then((response) => {
             usuario = response.data;
 
             this.getUsuario(usuario);

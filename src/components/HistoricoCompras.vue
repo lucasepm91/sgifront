@@ -4,11 +4,10 @@
 
     <b-list-group v-show="elementos != null && elementos.length > 0">
       <b-list-group-item :key="elemento.id" v-for="elemento in obterElementos">
-        <div>
-          <span>Nome do evento: {{elemento.evento.nome}}</span><hr>
-          <span>Data do evento: {{elemento.evento.data}}</span><hr>
+        <div :key="ingresso.id" v-for="ingresso in elemento.ingressos">          
+          <span>Id do evento: {{ingresso.eventoId}}</span><hr>
           <span>Data da compra: {{elemento.data}}</span><hr>
-          <span>Quantidade de ingressos: {{elemento.qtdIngressos}}</span>
+          <span>Preço: {{ingresso.preco}}</span>
         </div>
         <b-button size="sm" variant="danger" class="botaoExcluir" @click="deletar(elemento.id)">
           <b-icon icon="trash" ></b-icon>
