@@ -5,9 +5,12 @@
     <b-list-group v-show="elementos != null && elementos.length > 0">
       <b-list-group-item :key="elemento.id" v-for="elemento in obterElementos">
         <div :key="ingresso.id" v-for="ingresso in elemento.ingressos">          
-          <span>Id do evento: {{ingresso.eventoId}}</span><hr>
-          <span>Data da compra: {{elemento.data}}</span><hr>
-          <span>Preço: {{ingresso.preco}}</span>
+          <span>Evento: {{ingresso.nomeEvento}}</span><hr>
+          <span>Data: {{ingresso.dataSessao}}</span><hr>
+          <span>Codigo: {{ingresso.codigo}}</span><hr>
+          <span v-if="ingresso.endereco">Endereco: {{ingresso.endereco}}</span><hr v-if="ingresso.endereco">
+          <span v-if="ingresso.linkStream">Link: {{ingresso.linkStream}}</span><hr v-if="ingresso.linkStream">          
+          <span>Preço: {{ingresso.preco | formataMoeda}}</span>
         </div>
         <b-button size="sm" variant="danger" class="botaoExcluir" @click="deletar(elemento.id)">
           <b-icon icon="trash" ></b-icon>
@@ -70,7 +73,13 @@ export default {
     mostrarVazio: function(){
       return this.elementos.length == 0;
     }
-  }  
+  },
+  filters: {
+    formataMoeda: function (value) {
+      if (!value) return '0'      
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+    }
+  }
 }
 </script>
 

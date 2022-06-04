@@ -2,14 +2,21 @@
   <div class="espacoChao">
     <h4 class="tituloHistorico">Meus eventos</h4>
 
-    <b-list-group v-show="elementos != null && elementos.length > 0">
-      <b-list-group-item :key="elemento.id" v-for="elemento in obterElementos"><span class="espacoSpan">Nome: {{elemento.nome}}</span> <span class="espacoSpan">Lotação: {{elemento.lotacao}}</span>
-           <span class="espacoSpan">Ingressos vendidos: {{elemento.ingressosVendidos}}</span>
-        <b-button size="sm" variant="danger" class="botaoExcluir" @click="deletar(elemento.id)">
-          <b-icon icon="trash" ></b-icon>
-        </b-button>
-      </b-list-group-item>
-    </b-list-group>
+    <b-container v-show="elementos != null && elementos.length > 0">
+      <b-list-group :key="elemento.id" v-for="elemento in obterElementos">
+        <b-list-group-item :key="sessao.id" v-for="sessao in elemento.sessoes">
+          <span class="espacoSpan"><b>{{elemento.nome}}</b></span><hr>
+          <span class="espacoSpan" v-if="sessao.codigoLocal">Código do local: {{sessao.codigoLocal}}</span><hr v-if="sessao.codigoLocal">
+          <span class="espacoSpan">Data da sessão: {{sessao.data}}</span><hr>          
+          <span class="espacoSpan" v-if="elemento.enderecoCompleto">Endereço: {{elemento.enderecoCompleto}}</span><hr v-if="elemento.enderecoCompleto">
+          <span class="espacoSpan">Lotação: {{sessao.lotacao}}</span><hr>
+          <span class="espacoSpan">Ingressos vendidos: {{sessao.ingressosVendidos}}</span>          
+          <b-button size="sm" variant="danger" class="botaoExcluir" @click="deletar(elemento.id)">
+            <b-icon icon="trash"></b-icon>
+          </b-button>
+        </b-list-group-item>
+      </b-list-group>
+    </b-container>
 
     <b-container class="erroPesquisa" v-show='mostrarVazio'>
       <b-alert show variant="danger">Não foram encontrados eventos!</b-alert>
