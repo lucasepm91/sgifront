@@ -4,39 +4,39 @@
     <div id="divTituloSignIn">
       <p id="tituloSignIn">SignIn</p>
     </div>
-
-    <b-form id="formularioSignIn" validated> 
+    <b-overlay :show="mostrarOverlay" rounded="sm">
+      <b-form id="formularioSignIn" validated> 
       
-      <b-form-group
-        id="input-group-email-login"
-        label="Email:"
-        label-for="input-email-login">
-        <b-form-input
-          id="input-email-login"
-          v-model="email"
-          type="email"
-          required
-          placeholder="Informe seu email"
-        ></b-form-input>
-      </b-form-group>
+        <b-form-group
+          id="input-group-email-login"
+          label="Email:"
+          label-for="input-email-login">
+          <b-form-input
+            id="input-email-login"
+            v-model="email"
+            type="email"
+            required
+            placeholder="Informe seu email"
+          ></b-form-input>
+        </b-form-group>
 
-      <b-form-group
-        id="input-group-password-login"
-        label="Senha:"
-        label-for="input-password-login">
-        <b-form-input
-          id="input-password-login"
-          v-model="password"
-          type="password"
-          required
-          placeholder="Senha"
-        ></b-form-input>
-      </b-form-group>
+        <b-form-group
+          id="input-group-password-login"
+          label="Senha:"
+          label-for="input-password-login">
+          <b-form-input
+            id="input-password-login"
+            v-model="password"
+            type="password"
+            required
+            placeholder="Senha"
+          ></b-form-input>
+        </b-form-group>
       
-      <b-button @click="signIn" id="botaoSignIn">Enviar</b-button>    
-       
-    </b-form> 
-
+        <b-button @click="signIn" id="botaoSignIn">Enviar</b-button>    
+      
+      </b-form> 
+    </b-overlay> 
     <div id="linkParaSignUp">
       <p>Ainda não é cadastrado? Cadastre-se <router-link to="/sign-up">aqui</router-link></p>
     </div>
@@ -52,7 +52,8 @@ export default {
     data() {
       return {        
         password: '',
-        email: ''
+        email: '',
+        mostrarOverlay: false
       }
   },
   methods: {
@@ -65,7 +66,8 @@ export default {
       let token = "";
 
       if(loginNovo.email != null)
-      {        
+      {  
+        this.mostrarOverlay = true      
         try {
           const headersSemAuth = { 
             "Content-Type": "application/json",
@@ -98,6 +100,7 @@ export default {
             usuario = response.data;
 
             this.getUsuario(usuario);
+            this.mostrarOverlay = true
             this.$router.push({name: 'home'});
           });          
           

@@ -48,8 +48,7 @@ export default {
   methods: {
     ...mapActions(["historicoCompras", "deletarCompra"]),
     carregarElementos(){
-      this.elementos = this.todasCompras;     
-
+      this.elementos = this.todasCompras; 
       return this.elementos;
     },
     deletar(id){

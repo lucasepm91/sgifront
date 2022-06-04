@@ -23,16 +23,7 @@
           required
           placeholder="Informe seu cpf"
         ></b-form-input>
-      </b-form-group>    
-
-      <b-form-group id="input-group-endereco-signup" label="Endereço:" label-for="input-endereco-signup">
-        <b-form-input
-          id="input-endereco-signup"
-          v-model="form.endereco"
-          required
-          placeholder="Informe seu endereço"
-        ></b-form-input>
-      </b-form-group>      
+      </b-form-group>
 
       <b-form-group
         id="input-group-email-signup"
@@ -46,6 +37,75 @@
           placeholder="Informe seu email"
         ></b-form-input>
       </b-form-group>
+
+      <b-form-group id="input-group-pais-signup" label="País:" label-for="input-pais-signup">
+        <b-form-input
+          id="input-pais-signup"
+          v-model="form.pais"
+          required
+          placeholder="Informe o país"
+        ></b-form-input>
+      </b-form-group> 
+
+      <b-form-group id="input-group-estado-signup" label="Estado:" label-for="input-estado-signup">
+        <b-form-input
+          id="input-estado-signup"
+          v-model="form.estado"
+          required
+          placeholder="Informe o estado"
+        ></b-form-input>
+      </b-form-group> 
+
+      <b-form-group id="input-group-cidade-signup" label="Cidade:" label-for="input-cidade-signup">
+        <b-form-input
+          id="input-cidade-signup"
+          v-model="form.cidade"
+          required
+          placeholder="Informe a cidade"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group id="input-group-bairro-signup" label="Bairro:" label-for="input-bairro-signup">
+        <b-form-input
+          id="input-bairro-signup"
+          v-model="form.bairro"
+          required
+          placeholder="Informe o bairro"
+        ></b-form-input>
+      </b-form-group> 
+
+      <b-form-group id="input-group-endereco-signup" label="Endereço:" label-for="input-endereco-signup">
+        <b-form-input
+          id="input-endereco-signup"
+          v-model="form.endereco"
+          required
+          placeholder="Informe seu endereço"
+        ></b-form-input>
+      </b-form-group> 
+
+      <b-form-group id="input-group-complemento-signup" label="Complemento:" label-for="input-complemento-signup">
+        <b-form-input
+          id="input-complemento-signup"
+          v-model="form.complemento"
+          placeholder="Informe o complemento"
+        ></b-form-input>
+      </b-form-group> 
+
+      <b-form-group id="input-group-nomeFantasia-signup" label="Nome Fantasia:" label-for="input-nomeFantasia-signup">
+        <b-form-input
+          id="input-nomeFantasia-signup"
+          v-model="form.nomeFantasia"
+          placeholder="Informe o nome fantasia caso seja uma empresa"
+        ></b-form-input>
+      </b-form-group> 
+
+      <b-form-group id="input-group-nomeResponsavel-signup" label="Nome do Responsável:" label-for="input-nomeResponsavel-signup">
+        <b-form-input
+          id="input-nomeResponsavel-signup"
+          v-model="form.nomeResponsavel"
+          placeholder="Informe o nome do responsável caso seja uma empresa"
+        ></b-form-input>
+      </b-form-group>       
 
       <b-form-group
         id="input-group-password-signup"
@@ -74,7 +134,11 @@
       
       <b-button @click="signUp" id="botaoSignUp">Enviar</b-button>    
        
-    </b-form>     
+    </b-form>  
+
+    <b-modal v-model="mostrarMensagem" title="Enviado com sucesso!" :hide-footer="true" id="mensagemSucesso">
+       <b-img center :src="require('../assets/imagemSucesso.png')" fluid alt="símbolo de sucesso" title="símbolo de sucesso" id="imgCheck"></b-img>
+     </b-modal>   
   </div>
 </template>
 
@@ -88,11 +152,19 @@ export default {
         form: {
           nome: '',
           cpf: '',
+          pais: '',
+          estado: '',
+          cidade: '',
+          bairro: '',
           endereco: '',
+          complemento: '',
+          nomeFantasia: '',
+          nomeResponsavel: '',
           email: '',
           password: '',
           selected: 'cliente'
-        }
+        },
+        mostrarMensagem: false
       }
   },
   methods: {
@@ -102,12 +174,24 @@ export default {
         "nome": this.form.nome,
         "cpfCnpj": this.form.cpf,
         "email": this.form.email,
-        "endereco": this.form.endereco,
         "tipoUsuario": this.form.selected,
-        "saldoCarteira": 5000,
-        "password": this.form.password
+        "saldoCarteira": 0,
+        "password": this.form.password,
+        "nomeFantasia": this.form.nomeFantasia,
+        "nomeResponsavel": this.form.nomeResponsavel,
+        "pais": this.form.pais,
+        "estado": this.form.estado,
+        "cidade": this.form.cidade,
+        "bairro": this.form.bairro,
+        "enderecoCompleto": this.form.endereco,
+        "complemento": this.form.complemento
       };
       this.cadastrarUsuario(usuario);
+      this.mostrarMensagem = true;
+      setTimeout(this.escondeMensagem, 1000);      
+    },
+    escondeMensagem(){
+      this.mostrarMensagem = false;
       this.$router.push({name: 'login'});
     }
   }  
