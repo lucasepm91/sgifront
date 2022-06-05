@@ -112,13 +112,6 @@
       <b-form-group id="input-group-descricao-cadastroevento" label="Descrição do evento:" label-for="textarea-cadastroevento">
         <b-form-textarea id="textarea-cadastroevento" v-model="form.descricao" rows="3" required>
         </b-form-textarea>
-      </b-form-group>  
-
-      <b-form-group id="input-group-modalidade-cadastroevento" label="Modalidade:" label-for="input-modalidade-cadastroevento">
-        <b-form-select v-model="modalidade" class="mb-3" id="input-modalidade-cadastroevento">        
-          <b-form-select-option value="presencial">Presencial</b-form-select-option>
-          <b-form-select-option value="online">Online</b-form-select-option>        
-        </b-form-select>
       </b-form-group>
 
       <b-form-group label="Escolha a modalidade do evento" v-slot="{ ariaDescribedby }">
@@ -195,33 +188,42 @@ export default {
       var esquema = ""
       var sessoes = []
 
-      for(let i = 0; i < 6; i++)
-      {        
-        for(let j = 1; j < 13; j++)
-        {
-          let cod = ""
-          if (j < 10)
-            cod = listaIndices[i] + "0" + j          
-          else
-            cod = listaIndices[i] + j
+      if (this.form.selected == "presencial")
+      {
+        for(let i = 0; i < 6; i++)
+        {        
+          for(let j = 1; j < 13; j++)
+          {
+            let cod = ""
+            if (j < 10)
+              cod = listaIndices[i] + "0" + j          
+            else
+              cod = listaIndices[i] + j
           
-          if (i == 0 && j == 1)
-            esquema += cod
-          else
-            esquema = esquema + "|" + cod
+            if (i == 0 && j == 1)
+              esquema += cod
+            else
+              esquema = esquema + "|" + cod
+          }
         }
       }
 
       for (var i = 0; i < infoSessoes.length; i++)
       {
         var info = infoSessoes[i].split('|');
+        var codigoLocal = ''
+        if (info.length == 1)
+          codigoLocal = "Transmitido via stream"
+        else
+          codigoLocal = info[1]
+
         var sessao = {
           "id": null,
           "eventoId": null,
           "data": info[0],
           "lotacao": this.form.lotacao,
           "ingressosVendidos": 0,
-          "codigoLocal": info[1],          
+          "codigoLocal": codigoLocal,
           "esquema": esquema,
           "reservados": '',
           "livres": esquema

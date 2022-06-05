@@ -3,7 +3,7 @@
     <h4 class="tituloHistorico">Meus eventos</h4>
 
     <b-container v-show="elementos != null && elementos.length > 0">
-      <b-list-group :key="elemento.id" v-for="elemento in obterElementos">
+      <b-list-group class="espacoEvento" :key="elemento.id" v-for="elemento in obterElementos">
         <b-list-group-item :key="sessao.id" v-for="sessao in elemento.sessoes">
           <span class="espacoSpan"><b>{{elemento.nome}}</b></span><hr>
           <span class="espacoSpan" v-if="sessao.codigoLocal">Código do local: {{sessao.codigoLocal}}</span><hr v-if="sessao.codigoLocal">
@@ -98,6 +98,10 @@ export default {
 
 .espacoChao{
   margin-bottom: 50px;
+}
+
+.espacoEvento{
+  margin-bottom: 20px;
 }
 
 </style>

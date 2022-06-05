@@ -11,23 +11,32 @@
     </b-row>
     <b-row class="espaco distribuicao">
       <b-container class="descricao">
-        <p>{{ elemento.descricao }}</p>
-        <p>Endereço: {{ elemento.endereco}}</p>
-        <p>Data: {{ elemento.data}}</p>
+        <p>{{ elemento.descricao }}</p> 
+        <p>Data: {{ dataSessao }}</p>       
+        <p>Endereço: {{ elemento.enderecoCompleto}}</p>        
         <p>Organizador: {{ elemento.organizador.nome}}</p>
         <p>Email para contato: {{ elemento.organizador.email}}</p>
         <p>Preço: {{ elemento.preco | formataMoeda}}</p>
       </b-container>
       <b-container class="compra">
         <p>Adquira aqui seus ingressos!</p>
-        <span>Quantidade: </span><b-form-input v-model="quantidade" class="tamanhoQtd" id="quantidade" type="number" min="0" max="10"></b-form-input>
-        <br/>
-        <p>Total: R${{obterTotal | formataMoeda}}</p>
-        <b-button class="botaoCompra" variant="primary" @click="finalizarCompra">Ok</b-button>
+        <br>
+        <div>
+          <b-button-group>
+            <b-button :key="sessao.id" v-for="sessao in elemento.sessoes" @click="trocarMapa(sessao.id)">{{sessao.codigoLocal}}</b-button>
+          </b-button-group>
+        </div>
+        <br>
+        <b-overlay :show="mostrarOverlay" rounded="sm">
+          <escolha-assento v-if="elemento.modalidade == 'presencial'" :key="idSessao" :reservados="reservados"></escolha-assento>
+        </b-overlay>
+        <br>
+        <p v-if="elemento.modalidade == 'presencial'">Total: R${{obterTotal | formataMoeda}}</p>
+        <b-button class="botaoCompra" variant="primary" @click="adicionarIngressoCarrinho">Adicionar ao carrinho</b-button>
       </b-container>
     </b-row>
 
-    <b-modal v-model="mostrarMensagem" title="Compra realizada!" :hide-footer="true" id="mensagemSucesso">
+    <b-modal v-model="mostrarMensagem" title="Adicionado ao carrinho!" :hide-footer="true" id="mensagemSucesso">
        <b-img center :src="require('../assets/imagemSucesso.png')" fluid alt="símbolo de sucesso" title="símbolo de sucesso" id="imgCheck"></b-img>
     </b-modal>
   </b-container>
@@ -35,52 +44,78 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import EscolhaAssento from './EscolhaAssento.vue';
 
 export default {
+  components: { EscolhaAssento },
   name: 'Detalhe',
   data() {
     return {
       id: this.$route.params.id,
-      elemento: null,
-      quantidade: 0,
+      elemento: null,      
       mostrar: false,
-      mostrarMensagem: false
+      mostrarMensagem: false,
+      mostrarOverlay: false,
+      escolhidos: [],
+      reservados: [],
+      ingressos: [],
+      idSessao: "",
+      indiceSessao: 0,
+      dataSessao: ""
+    }
+  },
+  watch: {
+    elemento(newElemento, oldElemento){      
+      if (oldElemento == null)
+      {
+        this.dataSessao = newElemento.sessoes[0].data
+        this.trocarMapa(newElemento.sessoes[0].id)
+      }      
     }
   },
   methods: {
-    ...mapActions(["criarCompra","buscarEvento"]),    
-    finalizarCompra(){
+    ...mapActions(["adicionarCarrinho","buscarEvento"]),    
+    adicionarIngressoCarrinho(){
       let token = this.getToken;
-      let saldoCarteira = "saldoCarteira";
-      let hoje = new Date();
-      var dd = String(hoje.getDate()).padStart(2, '0');
-      var mm = String(hoje.getMonth() + 1).padStart(2, '0');
-      var yyyy = hoje.getFullYear();
-      hoje = dd + '/' + mm + '/' + yyyy;
-      let cliente = this.getUsuario;      
+      let ingressos = this.ingressos
 
-      let compra = {
-        "evento": this.elemento,
-        "qtdIngressos": this.quantidade,
-        "cliente": cliente,
-        "data": hoje,
-        "total": this.obterTotal,
-        "metodoPagamento": saldoCarteira
-      };
-      
-      this.criarCompra({compra, token});
+      this.adicionarCarrinho({ingressos, token});
       this.mostrarMensagem = true;
       
       setTimeout(this.escondeMensagem, 1000);
       
     },
     carregarElemento(){
-      this.elemento = this.obterEvento;
+      this.elemento = this.obterEvento           
+      
+      //setTimeout(this.mostrarLugares, 1000);
       return this.elemento;
     },
     escondeMensagem(){
       this.mostrarMensagem = false;
       this.$router.push({name: 'home'});
+    },
+    mostrarLugares(){
+      this.mostrarOverlay = false
+    },
+    trocarMapa(id){      
+      var sessao = null
+      var ind = 0
+
+      this.mostrarOverlay = true
+      for(ind = 0; ind < this.elemento.sessoes.length; ind++)
+      {
+        if(this.elemento.sessoes[ind].id == id)
+        {
+          sessao = this.elemento.sessoes[ind]
+          break
+        }
+      }
+      this.indiceSessao = ind
+      this.reservados = sessao.reservados.split('|')
+      this.idSessao = id
+      setTimeout(this.mostrarLugares, 1000);
+      /* Ver o que fazer com escolhidos se a sessão for alterada */
     }
   },
   created() {
@@ -89,9 +124,16 @@ export default {
 
     this.buscarEvento({id, token});      
     this.mostrar = true;    
+
+    this.$on('marcado', codigo => {
+      this.escolhidos.push(codigo);
+    });
+    this.$on('desmarcado', codigo => {
+      this.escolhidos = this.escolhidos.filter(cod => cod != codigo); 
+    }); 
   },
   computed:{
-    ...mapGetters(["obterEvento","getToken","getUsuario"]),
+    ...mapGetters(["getToken","obterEvento","getUsuario"]),
     obterTotal: function(){
       if(this.elemento != null)
         return this.quantidade * this.elemento.preco;

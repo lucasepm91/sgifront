@@ -49,8 +49,19 @@ const state = {
     ).then((response) => {
       commit('removerCompra', response.data);
     });
-  }
+  },
 
+  adicionarCarrinho({ commit }, {ingresso}){
+    commit('adicionarIngresso', ingresso)
+  },
+
+  limparCompra({ commit }){
+    commit('limparCompra')
+  },
+
+  removerIngresso({ commit }, {id}){
+    commit('removerIngresso', id)
+  }
  }
   
 const mutations = {    
@@ -58,7 +69,14 @@ const mutations = {
     historicoCompra: (state, data) => state.historicoCompra = data,
     removerCompra: (state, id) =>{
         state.historicoCompra = state.historicoCompra.filter(c => c.id != id);
-    }
+    },
+    limparCompra:(state) =>{
+      state.compra = [];
+    },
+    removerIngresso:(state, id) =>{
+      state.compra = state.compra.filter(c => c.id != id);
+    },
+    adicionarIngresso:(state, ingresso) => state.compra.push(ingresso)
 }
   
 export default {
