@@ -26,13 +26,13 @@ export default {
                 this.$refs['elem'].classList.remove("livre")
                 this.$refs['elem'].classList.add("selecionado");
                 this.estadoAtual = "selecionado";
-                this.$parent.$emit('marcado', this.codigo)
+                this.$parent.$emit('marcado', this.codigo)                                
             }
             else if (this.estadoAtual == "selecionado"){
                 this.$refs['elem'].classList.remove("selecionado")
                 this.$refs['elem'].classList.add("livre");
                 this.estadoAtual = "livre";
-                this.$parent.$emit('desmarcado', this.codigo)
+                this.$parent.$emit('desmarcado', this.codigo)                               
             }            
         }
     }

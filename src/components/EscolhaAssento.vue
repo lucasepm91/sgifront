@@ -2,7 +2,7 @@
     <div>
         <div class="tela"></div>
         <div v-for="linha in esquema" :key="linha.indice">
-            <meu-assento v-for="assento in linha.assentos" :key="assento.codigo" :estado="assento.estado" :codigo="assento.codigo"></meu-assento>
+            <meu-assento v-for="assento in linha.assentos" :key="assento.codigo" :estado="assento.estado" :codigo="assento.codigo" v-on="$listeners"></meu-assento>
             <br>            
         </div>        
     </div>
@@ -18,20 +18,10 @@ export default {
     data() {
         return {
             esquema: [],
-            escolhidos: [],
             listaIndices: ["A","B","C","D","E","F"]
         }
     },
     created(){
-        this.$on('marcado', codigo => {
-            this.escolhidos.push(codigo);
-            this.$parent.$emit('marcado', this.codigo)    
-        });
-        this.$on('desmarcado', codigo => {
-            this.escolhidos = this.escolhidos.filter(cod => cod != codigo);  
-            this.$parent.$emit('desmarcado', this.codigo)          
-        });
-        
         this.inicializarMapa()
     },
     methods:{
@@ -72,6 +62,6 @@ export default {
         background-color: black;
         color: whitesmoke;        
         margin-bottom: 15px;
-        padding: 5px 0;  
+        padding: 5px 5px;  
     }
 </style>

@@ -28,11 +28,11 @@
         </div>
         <br>
         <b-overlay :show="mostrarOverlay" rounded="sm">
-          <escolha-assento v-if="elemento.modalidade == 'presencial'" :key="idSessao" :reservados="reservados"></escolha-assento>
+          <escolha-assento v-if="elemento.modalidade == 'presencial'" :key="idSessao" :reservados="reservados" @marcado="inserirAssento(codigo)" @desmarcado="removerAssento(codigo)"></escolha-assento>
         </b-overlay>
         <br>
-        <p v-if="elemento.modalidade == 'presencial'">Total: R${{obterTotal | formataMoeda}}</p>
-        <b-button class="botaoCompra" variant="primary" @click="adicionarIngressoCarrinho">Adicionar ao carrinho</b-button>
+        <p v-if="elemento.modalidade == 'presencial'">Total: R${{total | formataMoeda}}</p>
+        <b-button variant="primary" @click="adicionarIngressoCarrinho">Adicionar ao carrinho</b-button>
       </b-container>
     </b-row>
 
@@ -52,7 +52,8 @@ export default {
   data() {
     return {
       id: this.$route.params.id,
-      elemento: null,      
+      elemento: null, 
+      quantidade: 0,     
       mostrar: false,
       mostrarMensagem: false,
       mostrarOverlay: false,
@@ -61,7 +62,9 @@ export default {
       ingressos: [],
       idSessao: "",
       indiceSessao: 0,
-      dataSessao: ""
+      dataSessao: "",
+      total: 0.0,
+      codigo: ''
     }
   },
   watch: {
@@ -69,8 +72,11 @@ export default {
       if (oldElemento == null)
       {
         this.dataSessao = newElemento.sessoes[0].data
-        this.trocarMapa(newElemento.sessoes[0].id)
+        this.trocarMapa(newElemento.sessoes[0].id)        
       }      
+    },
+    quantidade(){
+      this.total = this.calculaTotal()
     }
   },
   methods: {
@@ -86,9 +92,7 @@ export default {
       
     },
     carregarElemento(){
-      this.elemento = this.obterEvento           
-      
-      //setTimeout(this.mostrarLugares, 1000);
+      this.elemento = this.obterEvento
       return this.elemento;
     },
     escondeMensagem(){
@@ -116,6 +120,22 @@ export default {
       this.idSessao = id
       setTimeout(this.mostrarLugares, 1000);
       /* Ver o que fazer com escolhidos se a sessão for alterada */
+    },
+    calculaTotal: function(){
+      if(this.elemento != null)
+        return this.quantidade * this.elemento.preco;
+      else
+        return 0;
+    },
+    inserirAssento(codigo){      
+      this.escolhidos.push(codigo);
+      this.quantidade += 1;
+      this.calculaTotal()
+    },
+    removerAssento(codigo){      
+      this.escolhidos = this.escolhidos.filter(cod => cod != codigo); 
+      this.quantidade -= 1; 
+      this.calculaTotal()
     }
   },
   created() {
@@ -123,14 +143,7 @@ export default {
     let id = this.$route.params.id;
 
     this.buscarEvento({id, token});      
-    this.mostrar = true;    
-
-    this.$on('marcado', codigo => {
-      this.escolhidos.push(codigo);
-    });
-    this.$on('desmarcado', codigo => {
-      this.escolhidos = this.escolhidos.filter(cod => cod != codigo); 
-    }); 
+    this.mostrar = true; 
   },
   computed:{
     ...mapGetters(["getToken","obterEvento","getUsuario"]),
