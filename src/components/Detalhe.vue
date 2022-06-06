@@ -85,8 +85,7 @@ export default {
   methods: {
     ...mapActions(["adicionarCarrinho","buscarEvento"]),    
     adicionarIngressoCarrinho(){      
-      //let listaIng = []
-      
+            
       for (let i = 0; i < this.escolhidos.length; i++)
       {
         var ing = {
@@ -97,14 +96,12 @@ export default {
           "codigo": this.escolhidos[i],
           "preco": this.elemento.preco
         }
-        //listaIng.push(ing)
+        
         console.log(ing) 
         this.adicionarCarrinho({ing});       
       }
 
-      //this.adicionarCarrinho({listaIng});
-      this.mostrarMensagem = true;
-      
+      this.mostrarMensagem = true;      
       setTimeout(this.escondeMensagem, 1000);
       
     },

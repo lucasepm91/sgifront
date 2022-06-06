@@ -56,7 +56,7 @@ name: 'Carrinho',
     ...mapActions(["criarCompra", "limparCarrinho", "removerIngresso"]),    
     finalizarCompra(){
       let token = this.getToken;
-      let saldoCarteira = "saldoCarteira";
+      let carteiraVirtual = "CarteiraVirtual";
       let hoje = new Date();
       var dd = String(hoje.getDate()).padStart(2, '0');
       var mm = String(hoje.getMonth() + 1).padStart(2, '0');
@@ -80,10 +80,10 @@ name: 'Carrinho',
         "id": null,
         "usuarioId": this.usuario.id,
         "data": hoje,
-        "formaPagamento": saldoCarteira,
+        "formaPagamento": carteiraVirtual,
         "total": this.calcularTotal(ingressosFormatados),
         "ingressos": ingressosFormatados        
-      };
+      };      
       
       this.criarCompra({compra, token});
       this.mostrarMensagem = true;
@@ -117,8 +117,7 @@ name: 'Carrinho',
   },
   created() {    
     this.ingressos = this.obterIngressos
-    for (let j=0; j < this.ingressos.length; j++)
-      console.log(this.ingressos[j].codigo)
+    this.usuario = this.getUsuario
   },
   computed:{
     ...mapGetters(["obterIngressos","getUsuario"]),

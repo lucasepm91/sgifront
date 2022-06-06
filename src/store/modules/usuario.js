@@ -30,6 +30,9 @@ const actions = {
     },
     logout({ commit }){
         commit('logout');
+    },
+    subtrairSaldo({ commit }, valor){
+        commit('subtrairCarteira', valor)
     } 
 }
 
@@ -46,6 +49,9 @@ const mutations = {
     },
     cadastrarUsuario: (state,data) =>{ 
         state.usuario = data;
+    },
+    subtrairCarteira: (state,valor) =>{ 
+        state.usuario.saldoCarteira -= valor;
     }
 }
 
