@@ -28,7 +28,7 @@
         </div>
         <br>
         <b-overlay :show="mostrarOverlay" rounded="sm">
-          <escolha-assento v-if="elemento.modalidade == 'presencial'" :key="idSessao" :reservados="reservados" @marcado="inserirAssento(codigo)" @desmarcado="removerAssento(codigo)"></escolha-assento>
+          <escolha-assento v-if="elemento.modalidade == 'presencial'" :key="idSessao" :reservados="reservados" @marcado="inserirAssento" @desmarcado="removerAssento"></escolha-assento>
         </b-overlay>
         <br>
         <p v-if="elemento.modalidade == 'presencial'">Total: R${{total | formataMoeda}}</p>
@@ -59,7 +59,6 @@ export default {
       mostrarOverlay: false,
       escolhidos: [],
       reservados: [],
-      ingressos: [],
       idSessao: "",
       indiceSessao: 0,
       dataSessao: "",
@@ -77,15 +76,33 @@ export default {
     },
     quantidade(){
       this.total = this.calculaTotal()
+    },
+    indiceSessao(newIndiceSessao, oldIndiceSessao){
+      if(newIndiceSessao != oldIndiceSessao)
+        this.dataSessao = this.elemento.sessoes[newIndiceSessao].data
     }
   },
   methods: {
     ...mapActions(["adicionarCarrinho","buscarEvento"]),    
-    adicionarIngressoCarrinho(){
-      let token = this.getToken;
-      let ingressos = this.ingressos
+    adicionarIngressoCarrinho(){      
+      //let listaIng = []
+      
+      for (let i = 0; i < this.escolhidos.length; i++)
+      {
+        var ing = {
+          "id": i,
+          "eventoId": this.elemento.id,
+          "sessaoId": this.idSessao,
+          "nome": this.elemento.nome,
+          "codigo": this.escolhidos[i],
+          "preco": this.elemento.preco
+        }
+        //listaIng.push(ing)
+        console.log(ing) 
+        this.adicionarCarrinho({ing});       
+      }
 
-      this.adicionarCarrinho({ingressos, token});
+      //this.adicionarCarrinho({listaIng});
       this.mostrarMensagem = true;
       
       setTimeout(this.escondeMensagem, 1000);
@@ -127,7 +144,8 @@ export default {
       else
         return 0;
     },
-    inserirAssento(codigo){      
+    inserirAssento(codigo){ 
+      console.log(codigo)     
       this.escolhidos.push(codigo);
       this.quantidade += 1;
       this.calculaTotal()

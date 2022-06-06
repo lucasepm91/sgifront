@@ -3,20 +3,20 @@
     <h2>Carrinho</h2>
     <p v-if="usuario">Saldo da carteira: {{usuario.saldoCarteira}}</p>
     <b-container v-if="ingressos != null && ingressos.length > 0">
-      <b-list-group class="espacoEvento">
+      <b-list-group>
         <b-list-group-item :key="ingresso.id" v-for="ingresso in ingressos">
-          <span class="espacoSpan">{{ingresso.nome}}</span>
-          <span class="espacoSpan">Preço: {{ingresso.preco}}</span>          
+          <span>{{ingresso.nome}}</span>
+          <span>Preço: {{ingresso.preco}}</span>          
           <b-button size="sm" variant="danger" class="botaoExcluir" @click="deletar(ingresso.id)">
             <b-icon icon="trash"></b-icon>
           </b-button>
         </b-list-group-item>
-        <div>Total: {{calcularTotal | formataMoeda}}</div>
+        <div>Total: {{somaTotal | formataMoeda}}</div>
         <b-button variant="primary" class="botaoExcluir" @click="finalizarCompra()">
             Finalizar compra
         </b-button>
       </b-list-group>
-        <b-button variant="danger" class="botaoExcluir" @click="limpar()">
+        <b-button variant="danger" class="botaoExcluir" @click="zerarCarrinho()">
             Limpar carrinho <b-icon icon="trash"></b-icon>
         </b-button>
     </b-container>
@@ -47,12 +47,13 @@ name: 'Carrinho',
   data() {
     return {      
       usuario: null,
-      ingressos: []
+      ingressos: [],
+      codigoSaldo: '',
       mostrarMensagem: false
     }
   },
   methods: {
-    ...mapActions(["criarCompra", "limparCompra", "removerIngresso"]),    
+    ...mapActions(["criarCompra", "limparCarrinho", "removerIngresso"]),    
     finalizarCompra(){
       let token = this.getToken;
       let saldoCarteira = "saldoCarteira";
@@ -77,23 +78,23 @@ name: 'Carrinho',
         }
       let compra = {
         "id": null,
-        "usuarioId": this.usuario.id
+        "usuarioId": this.usuario.id,
         "data": hoje,
-        "evento": this.elemento,
         "formaPagamento": saldoCarteira,
-        "total": this.calcularTotal,
+        "total": this.calcularTotal(ingressosFormatados),
         "ingressos": ingressosFormatados        
       };
       
       this.criarCompra({compra, token});
       this.mostrarMensagem = true;
+      this.limparCarrinho()
       
       setTimeout(this.escondeMensagem, 1000);
       
     },
-    limparCarrinho(){
+    zerarCarrinho(){
         this.ingressos = []
-        this.limparCompra()
+        this.limparCarrinho()
     },
     deletar(id){
         this.ingressos = this.ingressos.filter(c => c.id != id);
@@ -105,20 +106,24 @@ name: 'Carrinho',
     escondeMensagem(){
       this.mostrarMensagem = false;
       this.$router.push({name: 'home'});
-    }
-  },
-  created() {
-    let token = this.getToken;
-    this.ingressos = this.obterIngressos
-  },
-  computed:{
-    ...mapGetters(["obterIngressos","getUsuario"]),    
-    calcularTotal: function(){
+    },
+    calcularTotal(ingressos){
         var total = 0.0;
-        for (var i = 0; i < this.ingressos.length; i++)
+        for (var i = 0; i < ingressos.length; i++)
             total += ingressos[i].preco;
 
         return total;
+    }
+  },
+  created() {    
+    this.ingressos = this.obterIngressos
+    for (let j=0; j < this.ingressos.length; j++)
+      console.log(this.ingressos[j].codigo)
+  },
+  computed:{
+    ...mapGetters(["obterIngressos","getUsuario"]),
+    somaTotal: function(){
+      return this.calcularTotal(this.ingressos)
     }
   },
   filters: {

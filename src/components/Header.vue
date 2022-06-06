@@ -13,6 +13,7 @@
             <b-dropdown-item><router-link tag="nav" to="/pecas-teatro">Peças de teatro</router-link></b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item v-if="autenticado && cliente"><router-link tag="nav" to="/historico-compras">Histórico</router-link></b-nav-item>
+          <b-nav-item v-if="autenticado && cliente"><router-link tag="nav" to="/carrinho">Carrinho</router-link></b-nav-item>
           <b-nav-item v-if="autenticado && !cliente"><router-link tag="nav" to="/historico-eventos">Histórico</router-link></b-nav-item>
           <b-nav-item v-if="autenticado && !cliente"><router-link tag="nav" to="/cadastro-evento">Criar Evento</router-link></b-nav-item>
           <b-nav-item><router-link tag="nav" to="/sobre">Sobre</router-link></b-nav-item>

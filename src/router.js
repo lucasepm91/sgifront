@@ -10,6 +10,7 @@ import SignUp from './components/SignUp.vue'
 import CadastroEvento from './components/CadastroEvento.vue'
 import HistoricoEventos from './components/HistoricoEventos.vue'
 import HistoricoCompras from './components/HistoricoCompras.vue'
+import Carrinho from './components/Carrinho.vue'
 
 Vue.use(VueRouter);
 
@@ -85,6 +86,11 @@ export default new VueRouter({
             path: '/historico-eventos',
             name: 'historico-eventos',
             component: HistoricoEventos
+        },
+        {
+            path: '/carrinho',
+            name: 'carrinho',
+            component: Carrinho
         }
     ]
 });

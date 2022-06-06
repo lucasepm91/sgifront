@@ -2,12 +2,14 @@ import axios from "axios";
 
 const state = {
     compra: [],
+    carrinho: [],
     historicoCompra:[]
   };
   
   const getters = {
       buscarCompra: state => state.compra,
-      todasCompras: state => state.historicoCompra
+      todasCompras: state => state.historicoCompra,
+      obterIngressos: state => state.carrinho
   };
   
   const actions = {    
@@ -51,12 +53,12 @@ const state = {
     });
   },
 
-  adicionarCarrinho({ commit }, {ingresso}){
-    commit('adicionarIngresso', ingresso)
+  adicionarCarrinho({ commit }, {ing}){
+    commit('adicionarIngresso', ing)
   },
 
-  limparCompra({ commit }){
-    commit('limparCompra')
+  limparCarrinho({ commit }){
+    commit('limparCarrinho')
   },
 
   removerIngresso({ commit }, {id}){
@@ -70,13 +72,19 @@ const mutations = {
     removerCompra: (state, id) =>{
         state.historicoCompra = state.historicoCompra.filter(c => c.id != id);
     },
-    limparCompra:(state) =>{
-      state.compra = [];
+    limparCarrinho:(state) =>{
+      state.carrinho = [];
     },
     removerIngresso:(state, id) =>{
-      state.compra = state.compra.filter(c => c.id != id);
+      state.carrinho = state.carrinho.filter(c => c.id != id);
     },
-    adicionarIngresso:(state, ingresso) => state.compra.push(ingresso)
+    adicionarIngresso:(state, ing) => 
+    {
+      console.log("Entrou compra.js")
+      console.log("Tam antes: " + state.carrinho.length)
+      state.carrinho.push(ing)   
+      console.log("Tam depois: " + state.carrinho.length)       
+    }
 }
   
 export default {
