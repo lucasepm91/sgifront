@@ -53,7 +53,7 @@ name: 'Carrinho',
     }
   },
   methods: {
-    ...mapActions(["criarCompra", "limparCarrinho", "removerIngresso"]),    
+    ...mapActions(["criarCompra", "limparCarrinho", "removerIngresso", "subtrairSaldo"]),    
     finalizarCompra(){
       let token = this.getToken;
       let carteiraVirtual = "CarteiraVirtual";
@@ -85,8 +85,10 @@ name: 'Carrinho',
         "ingressos": ingressosFormatados        
       };      
       
+      let valorDeducao = this.calcularTotal(ingressosFormatados)
       this.criarCompra({compra, token});
       this.mostrarMensagem = true;
+      this.subtrairSaldo({valorDeducao})
       this.limparCarrinho()
       
       setTimeout(this.escondeMensagem, 1000);

@@ -188,7 +188,7 @@ export default {
       var esquema = ""
       var sessoes = []
 
-      if (this.form.selected == "presencial")
+      if (this.form.modalidade == "presencial")
       {
         for(let i = 0; i < 6; i++)
         {        
