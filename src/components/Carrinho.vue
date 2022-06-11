@@ -1,28 +1,25 @@
 <template>
   <div>
-    <h2>Carrinho</h2>
-    <p v-if="usuario">Saldo da carteira: {{usuario.saldoCarteira}}</p>
-    <b-container v-if="ingressos != null && ingressos.length > 0">
+    <h3 class="titulo">Carrinho</h3>
+    <p class="saldo" v-if="usuario">Saldo da carteira: {{saldoCarteira | formataMoeda}}</p>
+    <b-container class="lista" v-if="ingressos != null && ingressos.length > 0">
       <b-list-group>
         <b-list-group-item :key="ingresso.id" v-for="ingresso in ingressos">
-          <span>{{ingresso.nome}}</span>
-          <span>Preço: {{ingresso.preco}}</span>          
+          <span>{{ingresso.nome}}</span><hr/>
+          <span>Preço: {{ingresso.preco | formataMoeda}}</span>          
           <b-button size="sm" variant="danger" class="botaoExcluir" @click="deletar(ingresso.id)">
             <b-icon icon="trash"></b-icon>
           </b-button>
         </b-list-group-item>
-        <div>Total: {{somaTotal | formataMoeda}}</div>
-        <b-button variant="primary" class="botaoExcluir" @click="finalizarCompra()">
-            Finalizar compra
+        <div class="espacoTopo">Total: {{somaTotal | formataMoeda}}</div>
+        <b-button variant="primary" class="espacoTopo" @click="finalizarCompra()">
+          Finalizar compra
         </b-button>
-      </b-list-group>
-        <b-button variant="danger" class="botaoExcluir" @click="zerarCarrinho()">
-            Limpar carrinho <b-icon icon="trash"></b-icon>
-        </b-button>
+      </b-list-group>      
     </b-container>
-    <div>
-        <h4>Inserir crédito na carteira</h4>
-        <b-form id="formularioCodigoCarteira" validated>
+    <div class="resgate" v-if="ingressos == null || ingressos.length < 1">
+        <h5>Inserir crédito na carteira</h5>
+        <b-form class="espacoTopo" id="formularioCodigoCarteira" validated>
             <b-form-group id="input-group-codigo-carteira" label="Resgatar código para adionar fundos:" label-for="input-codigo-carteira">
                 <b-form-input
                 id="input-codigo-carteira"
@@ -36,6 +33,9 @@
             Resgatar
         </b-button>
     </div>
+    <b-modal v-model="mostrarMensagem" title="Operação realizada!" :hide-footer="true" id="mensagemSucesso">
+       <b-img center :src="require('../assets/imagemSucesso.png')" fluid alt="símbolo de sucesso" title="símbolo de sucesso" id="imgCheck"></b-img>
+    </b-modal>
   </div>
 </template>
 
@@ -49,11 +49,12 @@ name: 'Carrinho',
       usuario: null,
       ingressos: [],
       codigoSaldo: '',
+      saldoCarteira: 0,
       mostrarMensagem: false
     }
   },
   methods: {
-    ...mapActions(["criarCompra", "limparCarrinho", "removerIngresso", "subtrairSaldo"]),    
+    ...mapActions(["criarCompra", "limparCarrinho", "removerIngresso", "subtrairSaldo", "adicionarSaldo"]),    
     finalizarCompra(){
       let token = this.getToken;
       let carteiraVirtual = "CarteiraVirtual";
@@ -88,7 +89,8 @@ name: 'Carrinho',
       let valorDeducao = this.calcularTotal(ingressosFormatados)
       this.criarCompra({compra, token});
       this.mostrarMensagem = true;
-      this.subtrairSaldo({valorDeducao})
+      this.subtrairSaldo(valorDeducao)
+      this.saldoCarteira -= valorDeducao
       this.limparCarrinho()
       
       setTimeout(this.escondeMensagem, 1000);
@@ -103,7 +105,19 @@ name: 'Carrinho',
         this.removerIngresso({id})
     },
     inserirCredito(){
-        /* Criar action para chamar o endpoint */
+      if(this.codigoSaldo.length == 5)
+      {
+        let token = this.getToken
+        let id = this.usuario.id
+        let codigo = {
+          "codigo": this.codigoSaldo
+        }       
+         
+        this.adicionarSaldo({token, id, codigo})
+        this.mostrarMensagem = true
+
+        setTimeout(this.escondeMensagem, 1000);
+      }
     },
     escondeMensagem(){
       this.mostrarMensagem = false;
@@ -120,9 +134,10 @@ name: 'Carrinho',
   created() {    
     this.ingressos = this.obterIngressos
     this.usuario = this.getUsuario
+    this.saldoCarteira = this.usuario.saldoCarteira
   },
   computed:{
-    ...mapGetters(["obterIngressos","getUsuario"]),
+    ...mapGetters(["obterIngressos","getUsuario","getToken"]),
     somaTotal: function(){
       return this.calcularTotal(this.ingressos)
     }
@@ -136,6 +151,37 @@ name: 'Carrinho',
 }
 </script>
 
-<style>
+<style scoped>
+.resgate {
+  margin-top: 50px;
+  margin-bottom: 60px;
+}
 
+.botao {
+  margin-top: 30px;
+  background-color: #c6391e;
+  color: whitesmoke;
+  border: solid 2px;
+}
+
+.botaoExcluir{
+  float: right;
+}
+
+.lista {
+  margin-top: 20px;
+}
+
+.titulo {
+  margin-top: 30px;
+}
+
+.saldo {
+  margin-top: 30px;
+  text-align: right;
+}
+
+.espacoTopo {
+  margin-top: 25px;
+}
 </style>

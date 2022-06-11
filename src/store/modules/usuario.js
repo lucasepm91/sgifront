@@ -28,6 +28,18 @@ const actions = {
             commit('cadastrarUsuario', response.data);
         });
     },
+    adicionarSaldo({ commit }, {token, codigo, id}){
+        const headers = { 
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        };
+
+        axios.post(
+            "https://localhost:44390/sgi/usuario/" + id + "/carteira", codigo, {headers}
+        ).then((response) => {
+            commit('atualizarUsuario', response.data);
+        });
+    },    
     logout({ commit }){
         commit('logout');
     },
@@ -52,6 +64,9 @@ const mutations = {
     },
     subtrairCarteira: (state,valor) =>{ 
         state.usuario.saldoCarteira -= valor;
+    },
+    atualizarUsuario: (state,data) =>{ 
+        state.usuario = data;
     }
 }
 

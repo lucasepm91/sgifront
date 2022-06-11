@@ -11,7 +11,7 @@
           <span class="espacoSpan" v-if="elemento.enderecoCompleto">Endereço: {{elemento.enderecoCompleto}}</span><hr v-if="elemento.enderecoCompleto">
           <span class="espacoSpan">Lotação: {{sessao.lotacao}}</span><hr>
           <span class="espacoSpan">Ingressos vendidos: {{sessao.ingressosVendidos}}</span>          
-          <b-button size="sm" variant="danger" class="botaoExcluir" @click="deletar(elemento.id)">
+          <b-button disabled size="sm" variant="danger" class="botaoExcluir" @click="deletar(elemento.id)">
             <b-icon icon="trash"></b-icon>
           </b-button>
         </b-list-group-item>

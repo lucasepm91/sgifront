@@ -31,7 +31,7 @@
           <escolha-assento v-if="elemento.modalidade == 'presencial'" :key="idSessao" :reservados="reservados" @marcado="inserirAssento" @desmarcado="removerAssento"></escolha-assento>
         </b-overlay>
         <br>
-        <p v-if="elemento.modalidade == 'presencial'">Total: R${{total | formataMoeda}}</p>
+        <p v-if="elemento.modalidade == 'presencial'">Total: {{total | formataMoeda}}</p>
         <b-button variant="primary" @click="adicionarIngressoCarrinho">Adicionar ao carrinho</b-button>
       </b-container>
     </b-row>

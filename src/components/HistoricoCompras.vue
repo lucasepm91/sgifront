@@ -2,21 +2,21 @@
   <div class="espacoChao">
     <h4 class="tituloHistorico">Minhas compras</h4>
 
-    <b-list-group v-show="elementos != null && elementos.length > 0">
-      <b-list-group-item :key="elemento.id" v-for="elemento in obterElementos">
-        <div :key="ingresso.id" v-for="ingresso in elemento.ingressos">          
+    <b-container v-show="elementos != null && elementos.length > 0">
+      <b-list-group class="espacoCompra" :key="elemento.id" v-for="elemento in obterElementos">
+        <b-list-group-item :key="ingresso.id" v-for="ingresso in elemento.ingressos">          
           <span>Evento: {{ingresso.nomeEvento}}</span><hr>
           <span>Data: {{ingresso.dataSessao}}</span><hr>
           <span>Codigo: {{ingresso.codigo}}</span><hr>
           <span v-if="ingresso.endereco">Endereco: {{ingresso.endereco}}</span><hr v-if="ingresso.endereco">
           <span v-if="ingresso.linkStream">Link: {{ingresso.linkStream}}</span><hr v-if="ingresso.linkStream">          
-          <span>Preço: {{ingresso.preco | formataMoeda}}</span>
-        </div>
-        <b-button size="sm" variant="danger" class="botaoExcluir" @click="deletar(elemento.id)">
-          <b-icon icon="trash" ></b-icon>
-        </b-button>
-      </b-list-group-item>
-    </b-list-group>
+          <span>Preço: {{ingresso.preco | formataMoeda}}</span>        
+          <b-button size="sm" disabled variant="danger" class="botaoExcluir" @click="deletar(elemento.id)">
+            <b-icon icon="trash" ></b-icon>
+          </b-button>
+        </b-list-group-item>
+      </b-list-group>
+    </b-container>  
 
     <b-container class="erroPesquisa" v-show='mostrarVazio'>
       <b-alert show variant="danger">Não foram encontradas compras!</b-alert>
@@ -103,6 +103,10 @@ export default {
 
 .espacoChao{
   margin-bottom: 50px;
+}
+
+.espacoCompra{
+  margin-bottom: 20px;
 }
 
 </style>
