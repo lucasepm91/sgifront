@@ -95,9 +95,8 @@ export default {
           "nome": this.elemento.nome,
           "codigo": this.escolhidos[i],
           "preco": this.elemento.preco
-        }
-        
-        console.log(ing) 
+        }        
+         
         this.adicionarCarrinho({ing});       
       }
 
@@ -132,8 +131,7 @@ export default {
       this.indiceSessao = ind
       this.reservados = sessao.reservados.split('|')
       this.idSessao = id
-      setTimeout(this.mostrarLugares, 1000);
-      /* Ver o que fazer com escolhidos se a sessão for alterada */
+      setTimeout(this.mostrarLugares, 1000);      
     },
     calculaTotal: function(){
       if(this.elemento != null)
