@@ -7,12 +7,12 @@
 
     <b-form id="formulario" validated>
       
-      <b-form-group id="input-group-nome" label="Nome:" label-for="input-nome">
+      <b-form-group id="input-group-assunto" label="Assunto:" label-for="input-assunto">
         <b-form-input
-          id="input-nome"
-          v-model="form.name"
+          id="input-assunto"
+          v-model="form.assunto"
           required
-          placeholder="Informe seu nome"
+          placeholder="Informe seu assunto"
         ></b-form-input>
       </b-form-group>    
       
@@ -48,29 +48,39 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
     name: 'Contato',
     data() {
       return {
         form: {
           email: '',
-          name: '',
+          assunto: '',
           mensagem: ''
         },
         mostrarMensagem: false
       }
   },
   methods: {
+    ...mapActions(["enviarEmail"]),
     enviaDados() {
+      let emailDto = {
+        "email": this.form.email,
+        "assunto": this.form.assunto,
+        "mensagem": this.form.mensagem
+      }      
+      this.enviarEmail(emailDto);
       this.mostrarMensagem = true;
       this.form.email = '';
-      this.form.name = '';
+      this.form.assunto = '';
       this.form.mensagem = '';  
       
       setTimeout(this.escondeMensagem, 1000);
     },
     escondeMensagem(){
       this.mostrarMensagem = false;
+      this.$router.push({name: 'home'});
     }
   }  
 }

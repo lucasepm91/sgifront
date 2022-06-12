@@ -45,6 +45,17 @@ const actions = {
     },
     subtrairSaldo({ commit }, valor){
         commit('subtrairCarteira', valor)
+    },
+    enviarEmail({commit}, emailDto){        
+        const headers = { 
+            "Content-Type": "application/json"
+        };
+
+        axios.post(
+            "https://localhost:44390/sgi/usuario/contato", emailDto, {headers}
+        ).then(() => {
+            commit('acusarEmail');
+        });
     } 
 }
 
@@ -67,6 +78,9 @@ const mutations = {
     },
     atualizarUsuario: (state,data) =>{ 
         state.usuario = data;
+    },
+    acusarEmail: () =>{
+        console.log("Email enviado!")
     }
 }
 
