@@ -53,7 +53,7 @@ const state = {
     });
   },
 
-  adicionarCarrinho({ commit }, {ing}){
+  adicionarCarrinho({ commit }, ing){    
     commit('adicionarIngresso', ing)
   },
 
@@ -79,11 +79,8 @@ const mutations = {
       state.carrinho = state.carrinho.filter(c => c.id != id);
     },
     adicionarIngresso:(state, ing) => 
-    {
-      console.log("Entrou compra.js")
-      console.log("Tam antes: " + state.carrinho.length)
-      state.carrinho.push(ing)   
-      console.log("Tam depois: " + state.carrinho.length)       
+    {      
+      state.carrinho.push(ing)      
     }
 }
   

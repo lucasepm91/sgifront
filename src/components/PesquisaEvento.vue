@@ -97,12 +97,16 @@ export default {
     {      
       this.buscarFilmes(token);
     }
+    else if(this.$route.name === "palestras")
+    {      
+      this.buscarPalestras(token);
+    }
     else{
       this.buscarPecasTeatro(token);
     }
   },
   methods: {
-    ...mapActions(["buscarShows", "buscarFilmes", "buscarPecasTeatro"]), 
+    ...mapActions(["buscarShows", "buscarFilmes", "buscarPecasTeatro", "buscarPalestras"]), 
     detalharElemento(idClick) {
       this.$router.push({
         name: this.$route.name + "-detalhe",
@@ -139,6 +143,10 @@ export default {
       {        
         this.elementos = this.todosFilmes;        
       }
+      else if(this.$route.name === "palestras")
+      {        
+        this.elementos = this.todosPalestras;        
+      }
       else{
         this.elementos = this.todosPecas;
       }
@@ -146,7 +154,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["todosShows", "todosFilmes", "todosPecas","getToken"]),
+    ...mapGetters(["todosShows", "todosFilmes", "todosPecas", "todosPalestras","getToken"]),
     resultadosFiltrados: function(){
       return this.pesquisar();
     },

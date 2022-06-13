@@ -13,21 +13,21 @@
       <b-container class="descricao">
         <p>{{ elemento.descricao }}</p> 
         <p>Data: {{ dataSessao }}</p>       
-        <p>Endereço: {{ elemento.enderecoCompleto}}</p>        
+        <p v-if="elemento.modalidade == 'presencial'">Endereço: {{ elemento.enderecoCompleto}}</p>        
         <p>Organizador: {{ elemento.organizador.nome}}</p>
         <p>Email para contato: {{ elemento.organizador.email}}</p>
         <p>Preço: {{ elemento.preco | formataMoeda}}</p>
       </b-container>
       <b-container class="compra">
         <p>Adquira aqui seus ingressos!</p>
-        <br>
+        <br  v-if="elemento.modalidade == 'presencial'">
         <div>
-          <b-button-group>
+          <b-button-group v-if="elemento.modalidade == 'presencial'">
             <b-button :key="sessao.id" v-for="sessao in elemento.sessoes" @click="trocarMapa(sessao.id)">{{sessao.codigoLocal}}</b-button>
           </b-button-group>
         </div>
-        <br>
-        <b-overlay :show="mostrarOverlay" rounded="sm">
+        <br  v-if="elemento.modalidade == 'presencial'">
+        <b-overlay :show="mostrarOverlay" rounded="sm" v-if="elemento.modalidade == 'presencial'">
           <escolha-assento v-if="elemento.modalidade == 'presencial'" :key="idSessao" :reservados="reservados" @marcado="inserirAssento" @desmarcado="removerAssento"></escolha-assento>
         </b-overlay>
         <br>
@@ -85,20 +85,37 @@ export default {
   methods: {
     ...mapActions(["adicionarCarrinho","buscarEvento"]),    
     adicionarIngressoCarrinho(){      
-            
-      for (let i = 0; i < this.escolhidos.length; i++)
+           
+      if(this.elemento.modalidade == 'presencial')
       {
-        var ing = {
-          "id": i,
+        for (let i = 0; i < this.escolhidos.length; i++)
+        {
+          var ing = {
+            "id": i,
+            "eventoId": this.elemento.id,
+            "sessaoId": this.idSessao,
+            "nome": this.elemento.nome,
+            "codigo": this.escolhidos[i],
+            "preco": this.elemento.preco
+          }        
+         
+          this.adicionarCarrinho(ing);       
+        }
+      }
+      else
+      {        
+        var ingOnline = {
+          "id": this.elemento.sessoes[0].id,
           "eventoId": this.elemento.id,
-          "sessaoId": this.idSessao,
+          "sessaoId": this.elemento.sessoes[0].id,
           "nome": this.elemento.nome,
-          "codigo": this.escolhidos[i],
+          "codigo": "",
           "preco": this.elemento.preco
         }        
          
-        this.adicionarCarrinho({ing});       
+        this.adicionarCarrinho(ingOnline);
       }
+      
 
       this.mostrarMensagem = true;      
       setTimeout(this.escondeMensagem, 1000);

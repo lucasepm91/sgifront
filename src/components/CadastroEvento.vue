@@ -31,7 +31,7 @@
           id="input-sessoes-cadastroevento"
           v-model="form.sessoes"
           required
-          placeholder="2022-01-01 00:00:00|Sala 01;2022-01-02 00:00:00|Sala 02;..."
+          placeholder="Presencial: 2022-01-01 00:00:00|Sala 01;2022-01-02 00:00:00|Sala 02;... ou Online: 2022-01-01 00:00:00"
         ></b-form-input>
       </b-form-group>
 
@@ -136,6 +136,7 @@
         <b-form-radio size="lg" value="filme">Filme</b-form-radio>
         <b-form-radio size="lg" value="show">Show</b-form-radio>
         <b-form-radio size="lg" value="peca">Peça de teatro</b-form-radio>
+        <b-form-radio size="lg" value="palestra">Palestra</b-form-radio>
       </b-form-radio-group>
     </b-form-group>
       

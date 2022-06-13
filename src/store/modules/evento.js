@@ -4,6 +4,7 @@ const state = {
     shows: [],
     filmes: [],
     pecas: [],
+    palestras: [],
     historico: [],
     ultimoEvento: null
 };
@@ -12,6 +13,7 @@ const getters = {
     todosShows: state => state.shows,
     todosFilmes: state => state.filmes,
     todosPecas: state => state.pecas,
+    todosPalestras: state => state.palestras,
     todosHistorico: state => state.historico,
     obterEvento: state => state.ultimoEvento
 };
@@ -53,6 +55,19 @@ const actions = {
             "https://localhost:44390/sgi/evento/tipo/peca", {headers}
         ).then((response) => {
             commit('buscarPecasTeatro', response.data);
+        });
+    },
+
+    buscarPalestras({ commit }, token) {
+        const headers = { 
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        };
+
+        axios.get(
+            "https://localhost:44390/sgi/evento/tipo/palestra", {headers}
+        ).then((response) => {
+            commit('buscarPalestras', response.data);
         });
     },
 
@@ -147,6 +162,9 @@ const mutations = {
     },
     buscarPecasTeatro: (state, data) =>{
         state.pecas = data;
+    },
+    buscarPalestras: (state, data) =>{
+        state.palestras = data;
     },
     buscarHistorico: (state, data) =>{
         state.historico = data;

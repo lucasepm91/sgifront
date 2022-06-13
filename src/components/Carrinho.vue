@@ -134,7 +134,7 @@ name: 'Carrinho',
   created() {    
     this.ingressos = this.obterIngressos
     this.usuario = this.getUsuario
-    this.saldoCarteira = this.usuario.saldoCarteira
+    this.saldoCarteira = this.usuario.saldoCarteira    
   },
   computed:{
     ...mapGetters(["obterIngressos","getUsuario","getToken"]),

@@ -73,6 +73,16 @@ export default new VueRouter({
             component: Detalhe
         },
         {
+            path: '/palestras',
+            name: 'palestras',
+            component: PesquisaEvento
+        },
+        {
+            path: '/palestras/:id',
+            name: 'palestras-detalhe',
+            component: Detalhe
+        },
+        {
             path: '/cadastro-evento',
             name: 'cadastro-evento',
             component: CadastroEvento
